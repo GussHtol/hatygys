@@ -1,0 +1,452 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome Back | Serenity</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background:
+        linear-gradient(rgba(15, 19, 54, .25), rgba(15, 15, 50, .35)),
+        url('https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=2400&q=90');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    padding: 20px;
+}
+
+/* Затемнение фона */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(
+        120deg,
+        rgba(28, 34, 87, .25),
+        rgba(102, 69, 137, .18),
+        rgba(20, 23, 60, .35)
+    );
+    z-index: -1;
+}
+
+/* Основная карточка */
+.login-card {
+    width: 535px;
+    max-width: 100%;
+    padding: 38px 65px;
+    border-radius: 28px;
+
+    background: rgba(35, 39, 78, .58);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+
+    border: 1px solid rgba(255,255,255,.20);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.28),
+        inset 0 1px 1px rgba(255,255,255,.15);
+
+    animation: appear 1s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Иконка */
+.logo {
+    text-align: center;
+    font-size: 43px;
+    font-weight: 300;
+    margin-bottom: 12px;
+    color: #fff;
+    animation: rotate 12s linear infinite;
+}
+
+@keyframes rotate {
+    to { transform: rotate(360deg); }
+}
+
+/* Заголовок */
+h1 {
+    text-align: center;
+    font-size: 43px;
+    font-weight: 400;
+    letter-spacing: -2px;
+    margin-bottom: 8px;
+}
+
+h1 span {
+    color: #c5b7f8;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(255,255,255,.72);
+    margin-bottom: 23px;
+}
+
+/* Поля */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 11px;
+    color: rgba(255,255,255,.58);
+    margin-bottom: 8px;
+}
+
+.input-box {
+    position: relative;
+}
+
+.input-box input {
+    width: 100%;
+    height: 51px;
+    padding: 0 16px;
+    border-radius: 18px;
+
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.23);
+
+    color: white;
+    outline: none;
+    font-size: 13px;
+    font-family: inherit;
+
+    transition: .3s;
+}
+
+.input-box input::placeholder {
+    color: rgba(255,255,255,.55);
+}
+
+.input-box input:focus {
+    border-color: #a88aff;
+    box-shadow: 0 0 0 3px rgba(151,115,255,.13);
+    background: rgba(255,255,255,.06);
+}
+
+.password-input {
+    padding-right: 48px !important;
+}
+
+.eye {
+    position: absolute;
+    right: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    opacity: .65;
+    font-size: 19px;
+    transition: .2s;
+}
+
+.eye:hover {
+    opacity: 1;
+}
+
+/* Remember me */
+.options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    margin: 5px 0 23px;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: rgba(255,255,255,.85);
+}
+
+.remember input {
+    appearance: none;
+    width: 17px;
+    height: 17px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.4);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.remember input:checked {
+    background: #9866f7;
+    border-color: #9866f7;
+}
+
+.remember input:checked::after {
+    content: "✓";
+    display: block;
+    color: white;
+    text-align: center;
+    font-size: 12px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    transition: .2s;
+}
+
+a:hover {
+    color: #c8aaff;
+}
+
+/* Кнопки */
+.login-btn {
+    width: 100%;
+    height: 51px;
+    border: none;
+    border-radius: 30px;
+    background: #fff;
+    color: #171724;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.login-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    background: #e9e2ff;
+}
+
+.login-btn:active {
+    transform: scale(.98);
+}
+
+/* Разделитель */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 23px 0;
+    color: rgba(255,255,255,.55);
+    font-size: 11px;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,.19);
+}
+
+/* Google */
+.google-btn {
+    width: 100%;
+    height: 51px;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 30px;
+    background: transparent;
+    color: white;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.google-btn:hover {
+    background: rgba(255,255,255,.12);
+    border-color: rgba(255,255,255,.5);
+    transform: translateY(-2px);
+}
+
+.google-icon {
+    font-size: 17px;
+    font-weight: 600;
+    margin-right: 9px;
+    background: conic-gradient(
+        from -45deg,
+        #4285F4 0deg 90deg,
+        #34A853 90deg 180deg,
+        #FBBC05 180deg 270deg,
+        #EA4335 270deg 360deg
+    );
+    color: transparent;
+    background-clip: text;
+}
+
+/* Регистрация */
+.signup {
+    text-align: center;
+    font-size: 11px;
+    color: rgba(255,255,255,.6);
+    margin-top: 35px;
+}
+
+.signup a {
+    font-weight: 500;
+    color: white;
+}
+
+/* Мобильная версия */
+@media(max-width: 600px) {
+    body {
+        padding: 15px;
+    }
+
+    .login-card {
+        padding: 35px 25px;
+        border-radius: 24px;
+    }
+
+    h1 {
+        font-size: 35px;
+    }
+
+    .logo {
+        font-size: 36px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-card">
+
+    <div class="logo">☼</div>
+
+    <h1>Welcome <span>back!</span></h1>
+
+    <p class="subtitle">
+        Sign in to access your guided meditations, daily practices,<br>
+        and personal journey
+    </p>
+
+    <form id="loginForm">
+
+        <div class="input-group">
+            <label>Email</label>
+            <div class="input-box">
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <div class="input-box">
+                <input
+                    type="password"
+                    id="password"
+                    class="password-input"
+                    placeholder="Enter your password"
+                    required
+                >
+                <span class="eye" id="eye">◎</span>
+            </div>
+        </div>
+
+        <div class="options">
+            <label class="remember">
+                <input type="checkbox" checked>
+                Remember me
+            </label>
+
+            <a href="#" id="forgot">Forgot password?</a>
+        </div>
+
+        <button class="login-btn" type="submit">
+            Log In
+        </button>
+
+    </form>
+
+    <div class="divider">Or</div>
+
+    <button class="google-btn" id="google">
+        <span class="google-icon">G</span>
+        Sign In with Google
+    </button>
+
+    <div class="signup">
+        Don't have an account?
+        <a href="#" id="signup">Sign Up</a>
+    </div>
+
+</div>
+
+<script>
+
+// Показать / скрыть пароль
+const password = document.getElementById('password');
+const eye = document.getElementById('eye');
+
+eye.addEventListener('click', () => {
+    if (password.type === 'password') {
+        password.type = 'text';
+        eye.textContent = '◉';
+    } else {
+        password.type = 'password';
+        eye.textContent = '◎';
+    }
+});
+
+// Вход
+document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById('email').value;
+
+    alert('Welcome back, ' + email + '!');
+});
+
+// Остальные кнопки
+document.getElementById('forgot').addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('Password recovery will be available soon!');
+});
+
+document.getElementById('signup').addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('Registration will be available soon!');
+});
+
+document.getElementById('google').addEventListener('click', () => {
+    alert('Google authentication needs to be connected.');
+});
+
+</script>
+
+</body>
+</html>
