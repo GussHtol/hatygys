@@ -8,10 +8,11 @@ header{position:sticky;top:0;z-index:4;display:flex;align-items:center;justify-c
 </style></head><body>
 <video id="bg" autoplay muted loop playsinline><source src="background.mp4" type="video/mp4"></video><div class="shade"></div>
 <section class="auth" id="auth"><div class="panel" id="panel"><div class="logo">gooseGTP</div><div class="sub">YOUR PERSONAL SPACE</div><h1 id="title">Создать аккаунт</h1><p class="desc" id="desc">Зарегистрируйся, чтобы открыть центр загрузок</p><form id="form"><div id="usernameWrap"><label>Логин</label><input id="user" minlength="3" maxlength="24" autocomplete="username" placeholder="Введите логин" required></div><label>Email</label><input id="email" type="email" autocomplete="email" placeholder="Введите Email" required><label>Пароль</label><input id="pass" type="password" minlength="8" autocomplete="new-password" placeholder="Введите пароль" required><div id="repeatWrap"><label>Повторите пароль</label><input id="repeat" type="password" autocomplete="new-password" placeholder="Повторите пароль"></div><button class="primary" id="submit">Зарегистрироваться</button></form><div class="switch"><span id="switchLabel">Уже есть аккаунт? </span><button type="button" id="switch">Войти</button></div><div class="status" id="authStatus"></div></div></section>
-<div id="store" class="hidden"><header><div class="brand">goose<span>GTP</span></div><nav class="nav"><button class="active" data-tab="extensions">Расширения</button><button data-tab="apps">Приложения</button><button data-tab="games">Игры и проекты</button></nav><div class="user"><span id="current"></span> <button class="ghost" id="logout">Выйти</button></div></header><main><div class="hero"><div class="eyebrow">GOOSEGTP DOWNLOAD CENTER</div><h1>Всё нужное — в одном месте.</h1><p>Расширения для браузера, приложения и авторские проекты gooseGTP. Выбирай и скачивай.</p></div><div class="tools"><h2 id="sectionTitle">Расширения для браузера</h2><input class="search" id="search" placeholder="Поиск по каталогу..."></div><section class="grid" id="catalog"></section></main></div>
+<div id="store" class="hidden"><header><div class="brand">goose<span>GTP</span></div><nav class="nav"><button class="active" data-tab="extensions">Расширения</button><button data-tab="apps">Приложения</button><button data-tab="games">Игры и проекты</button></nav><div class="user"><span id="current"></span> <button class="ghost" id="myPosts">Мои публикации</button> <button class="ghost" id="logout">Выйти</button></div></header><main><div class="hero"><div class="eyebrow">GOOSEGTP DOWNLOAD CENTER</div><h1>Всё нужное — в одном месте.</h1><p>Расширения для браузера, приложения и авторские проекты gooseGTP. Выбирай и скачивай.</p></div><div class="tools"><h2 id="sectionTitle">Расширения для браузера</h2><input class="search" id="search" placeholder="Поиск по каталогу..."></div><section class="grid" id="catalog"></section></main></div>
 <button class="crown" id="crown" title="Панель владельца">♛</button>
 <div class="overlay hidden" id="overlay"><section class="modal" id="loginAdmin"><h2>♛ Панель владельца</h2><p class="hint">Доступ проверяется через защищённые права администратора Supabase.</p><p class="hint">Войди в свой аккаунт. Если у него есть права администратора, откроется публикация.</p><div class="actions"><button class="ghost" id="close">Закрыть</button><button class="primary" id="verify">Продолжить</button></div><div class="status" id="adminStatus"></div></section>
-<section class="modal hidden" id="admin"><h2>Публикация материалов</h2><p class="hint">Добавь расширение, приложение или игру. Выбранный файл сохранится в этом браузере и появится в каталоге.</p><form id="publish"><div class="field"><label>Название</label><input id="itemTitle" maxlength="60" required placeholder="Название продукта"></div><div class="field"><label>Раздел</label><select id="category"><option value="extensions">Расширение для браузера</option><option value="apps">Приложение</option><option value="games">Игра / проект</option></select></div><div class="field"><label>Описание</label><textarea id="description" maxlength="350" required placeholder="Что делает продукт?"></textarea></div><div class="field"><label>Файл для скачивания</label><input id="file" type="file" required></div><div class="actions"><button class="primary">Опубликовать</button><button class="ghost" type="button" id="closeAdmin">Закрыть</button></div></form><div class="status" id="publishStatus"></div><div class="list" id="adminList"></div></section></div>
+<section class="modal hidden" id="admin"><h2>Публикация материалов</h2><p class="hint">Добавь расширение, приложение или игру. Выбранный файл сохранится в этом браузере и появится в каталоге.</p><form id="publish"><div class="field"><label>Название</label><input id="itemTitle" maxlength="60" required placeholder="Название продукта"></div><div class="field"><label>Раздел</label><select id="category"><option value="extensions">Расширение для браузера</option><option value="apps">Приложение</option><option value="games">Игра / проект</option></select></div><div class="field"><label>Описание</label><textarea id="description" maxlength="350" required placeholder="Что делает продукт?"></textarea></div><div class="field"><label>Файл для скачивания</label><input id="file" type="file" required></div><div class="actions"><button class="primary">Опубликовать</button><button class="ghost" type="button" id="closeAdmin">Закрыть</button></div></form><div class="status" id="publishStatus"></div><div class="list" id="adminList"></div></section>
+<section class="modal hidden" id="mine"><h2>Мои публикации</h2><p class="hint">Здесь можно удалить свои материалы — файл тоже удалится из хранилища.</p><div class="list" id="mineList"></div><div class="actions"><button class="ghost" id="closeMine">Закрыть</button></div></section></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // Публичные настройки проекта. Publishable key предназначен для браузера.
@@ -97,30 +98,61 @@ supabaseClient.auth.onAuthStateChange((event,session)=>{
 document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{tab=b.dataset.tab;document.querySelectorAll("[data-tab]").forEach(x=>x.classList.toggle("active",x===b));$("search").value="";render();});
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 async function getItems(){
-  const {data,error}=await supabaseClient.from("products").select("id,title,category,description,file_name,file_path,created_at").order("created_at",{ascending:false});
+  const {data,error}=await supabaseClient.from("products").select("id,title,category,description,file_name,file_path,created_by,created_at").order("created_at",{ascending:false});
   if(error){console.error(error);return [];}return data||[];
 }
 async function render(){
   const stored=await getItems();
-  const samples=[{id:"s1",title:"Мои расширения",category:"extensions",description:"Здесь будут появляться твои браузерные расширения.",file_name:"Скоро",sample:true},{id:"s2",title:"Мои приложения",category:"apps",description:"Публикуй здесь свои программы для Windows и другие приложения.",file_name:"Скоро",sample:true},{id:"s3",title:"Мои проекты",category:"games",description:"Игры, эксперименты и творческие проекты gooseGTP.",file_name:"Скоро",sample:true}];
-  const q=$("search").value.toLowerCase(),arr=[...samples,...stored].filter(x=>x.category===tab&&(x.title+" "+x.description).toLowerCase().includes(q));
+  const q=$("search").value.toLowerCase();
+  const arr=stored.filter(x=>x.category===tab&&(x.title+" "+x.description).toLowerCase().includes(q));
   $("sectionTitle").textContent=labels[tab];$("catalog").innerHTML="";
   if(!arr.length){$("catalog").innerHTML='<div class="empty">Пока здесь ничего нет. Новые материалы появятся позже.</div>';return;}
   for(const x of arr){
+    const mine=!!currentUser&&x.created_by===currentUser.id;
     const el=document.createElement("article");el.className="card";
-    el.innerHTML=`<div class="icon">${tab==="extensions"?"✧":tab==="apps"?"▣":"◈"}</div><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p><div class="bottom"><span class="file">${esc(x.file_name||"Файл")}</span><button class="download" ${x.sample?"disabled":""}>${x.sample?"Скоро":"Скачать"}</button></div>`;
-    if(!x.sample)el.querySelector("button").onclick=async()=>{const {data}=supabaseClient.storage.from("downloads").getPublicUrl(x.file_path);const a=document.createElement("a");a.href=data.publicUrl;a.download=x.file_name;a.target="_blank";a.rel="noopener";a.click();};
+    el.innerHTML=`<div class="icon">${tab==="extensions"?"✧":tab==="apps"?"▣":"◈"}</div><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p><div class="bottom"><span class="file">${esc(x.file_name||"Файл")}</span><button class="download">Скачать</button>${mine?'<button class="del" title="Удалить мою публикацию">✕</button>':''}</div>`;
+    el.querySelector(".download").onclick=async()=>{const {data}=supabaseClient.storage.from("downloads").getPublicUrl(x.file_path);const a=document.createElement("a");a.href=data.publicUrl;a.download=x.file_name;a.target="_blank";a.rel="noopener";a.click();};
+    if(mine)el.querySelector(".del").onclick=()=>removeItem(x);
     $("catalog").append(el);
   }
 }
+async function removeItem(x){
+  if(!confirm(`Удалить «${x.title}»? Файл тоже будет удалён.`))return;
+  const {error}=await supabaseClient.from("products").delete().eq("id",x.id);
+  if(error){alert("Не удалось удалить публикацию: "+error.message);return;}
+  if(x.file_path)await supabaseClient.storage.from("downloads").remove([x.file_path]);
+  await render();
+  if(owner)await adminList();
+  if(!$("mine").classList.contains("hidden"))await mineList();
+}
+async function mineList(){
+  const arr=(await getItems()).filter(x=>currentUser&&x.created_by===currentUser.id);
+  $("mineList").innerHTML="";
+  if(!arr.length){$("mineList").innerHTML="<p>У вас пока нет публикаций.</p>";return;}
+  for(const x of arr){
+    const r=document.createElement("div");r.className="row";
+    r.innerHTML=`<span>${esc(x.title)} · ${esc(x.file_name)}</span><button class="del">Удалить</button>`;
+    r.querySelector("button").onclick=()=>removeItem(x);
+    $("mineList").append(r);
+  }
+}
+$("myPosts").onclick=async()=>{
+  if(!currentUser)return;
+  $("overlay").classList.remove("hidden");
+  $("loginAdmin").classList.add("hidden");
+  $("admin").classList.add("hidden");
+  $("mine").classList.remove("hidden");
+  await mineList();
+};
 $("search").oninput=render;
 $("crown").onclick=async()=>{
+  $("mine").classList.add("hidden");
   if(!currentUser){$("overlay").classList.remove("hidden");$("loginAdmin").classList.remove("hidden");$("admin").classList.add("hidden");$("adminStatus").textContent="Сначала войди в свой аккаунт.";return;}
   const {data,error}=await supabaseClient.rpc("is_admin");
   if(error||data!==true){$("overlay").classList.remove("hidden");$("loginAdmin").classList.remove("hidden");$("admin").classList.add("hidden");$("adminStatus").textContent="У этого аккаунта нет прав администратора.";return;}
   owner=true;$("overlay").classList.remove("hidden");$("loginAdmin").classList.add("hidden");$("admin").classList.remove("hidden");await adminList();
 };
-$("close").onclick=$("closeAdmin").onclick=()=>$("overlay").classList.add("hidden");
+$("close").onclick=$("closeAdmin").onclick=$("closeMine").onclick=()=>$("overlay").classList.add("hidden");
 $("overlay").onclick=e=>{if(e.target===$("overlay"))$("overlay").classList.add("hidden");};
 $("verify").onclick=()=>{};
 $("publish").onsubmit=async e=>{
@@ -139,10 +171,10 @@ $("publish").onsubmit=async e=>{
   }catch(err){$("publishStatus").textContent="Ошибка публикации: "+(err.message||"проверь SQL-политики");}
 };
 async function adminList(){
-  const arr=await getItems();$("adminList").innerHTML="<b>Твои публикации</b>";
+  const arr=await getItems();$("adminList").innerHTML="<b>Все публикации</b>";
   if(!arr.length){$("adminList").innerHTML+="<p>Пока нет публикаций.</p>";return;}
   for(const x of arr){const r=document.createElement("div");r.className="row";r.innerHTML=`<span>${esc(x.title)} · ${esc(x.file_name)}</span><button class="del">Удалить</button>`;
-    r.querySelector("button").onclick=async()=>{if(!owner)return;const {error:delError}=await supabaseClient.from("products").delete().eq("id",x.id);if(delError){$("publishStatus").textContent=delError.message;return;}await supabaseClient.storage.from("downloads").remove([x.file_path]);await adminList();await render();};$("adminList").append(r);}
+    r.querySelector("button").onclick=()=>removeItem(x);$("adminList").append(r);}
 }
 const bg=$("bg");bg.play().catch(()=>{});let audio=false;
 function enableAudio(){if(audio)return;audio=true;bg.muted=false;bg.play().catch(()=>{bg.muted=true;});window.removeEventListener("pointerdown",enableAudio);window.removeEventListener("keydown",enableAudio);}

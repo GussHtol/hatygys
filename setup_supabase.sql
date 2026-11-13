@@ -74,6 +74,10 @@ for insert to authenticated with check ((select public.is_admin()) and created_b
 drop policy if exists "Admins can delete products" on public.products;
 create policy "Admins can delete products" on public.products
 for delete to authenticated using ((select public.is_admin()));
+-- Любой пользователь может удалить свою публикацию.
+drop policy if exists "Users can delete own products" on public.products;
+create policy "Users can delete own products" on public.products
+for delete to authenticated using (created_by = (select auth.uid()));
 revoke insert, update, delete on public.products from anon;
 grant select on public.products to anon, authenticated;
 grant insert, delete on public.products to authenticated;
@@ -89,6 +93,13 @@ with check (bucket_id = 'downloads' and (select public.is_admin()));
 drop policy if exists "Admins can delete downloads" on storage.objects;
 create policy "Admins can delete downloads" on storage.objects
 for delete to authenticated using (bucket_id = 'downloads' and (select public.is_admin()));
+-- Пользователь может удалить файлы из своей папки (путь начинается с его id).
+drop policy if exists "Users can delete own downloads" on storage.objects;
+create policy "Users can delete own downloads" on storage.objects
+for delete to authenticated using (
+  bucket_id = 'downloads'
+  and (storage.foldername(name))[1] = (select auth.uid())::text
+);
 
 -- 6) После регистрации своего аккаунта назначь его администратором:
 -- замени email@example.com на свой Email и выполни отдельно:
